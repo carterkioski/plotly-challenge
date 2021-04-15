@@ -12,31 +12,36 @@ function optionChanged(val){
     d3.json("./samples.json").then( (data) => {
 
         row = data['samples'].filter((item) => item['id'] === val)[0]
-        otu_ids = row['otu_ids'].slice(0,10).map( item => 'OTU ' + item)
+        otuIds = row['otu_ids'].slice(0,10).map( item => 'OTU ' + item)
         values = row['sample_values'].slice(0,10).map(item => parseInt(item))
-
+        labels = row['otu_labels'].slice(0,10)
         trace1 = {
             x:values,
-            y:otu_ids,
+            y:otuIds,
             type: 'bar',
             orientation: 'h',
+            text: labels
         }
         barLayout = {yaxis:{ autorange: 'reversed' }}
         barData = [trace1]
         Plotly.newPlot('bar', barData,barLayout);
 
-
+        bubbleOtuIds = row['otu_ids']
+        bubbleValues = row['sample_values'].map(item => parseInt(item))
+        bubbleLabels = row['otu_labels']
         var trace2 = {
-            x: otu_ids,
-            y: values,
+            x: bubbleOtuIds,
+            y: bubbleValues,
             mode: 'markers',
             marker: {
-              size: values
-            }
+              size: bubbleValues,
+              color: bubbleOtuIds.map( item => `rgb(${item%255}, ${item%255}, ${item%255})`),
+            },
+            text: bubbleLabels
           };
-          
         bubbleData = [trace2]
-        Plotly.newPlot('bubble', bubbleData);
+        bubbleLayout = {xaxis: {title: 'OTU ID'}}
+        Plotly.newPlot('bubble', bubbleData, bubbleLayout)
 
 
     })
