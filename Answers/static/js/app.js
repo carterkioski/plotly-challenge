@@ -21,9 +21,25 @@ function optionChanged(val){
             type: 'bar',
             orientation: 'h',
         }
-        layout = {yaxis:{ autorange: 'reversed' }}
-        traces = [trace1]
-        Plotly.newPlot('bar', traces,layout);
+        barLayout = {yaxis:{ autorange: 'reversed' }}
+        barData = [trace1]
+        Plotly.newPlot('bar', barData,barLayout);
+
+
+        var trace2 = {
+            x: otu_ids,
+            y: values,
+            mode: 'markers',
+            marker: {
+              size: values.map(item => parseInt(item) / max(values))
+            }
+          };
+          
+        bubbleData = [trace2]
+        Plotly.newPlot('bubble', bubbleData);
+
+
     })
     
+
 }
