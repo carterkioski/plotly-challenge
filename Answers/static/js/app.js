@@ -13,7 +13,7 @@ function optionChanged(val){
 
         row = data['samples'].filter((item) => item['id'] === val)[0]
         otu_ids = row['otu_ids'].slice(0,10).map( item => 'OTU ' + item)
-        values = row['sample_values'].slice(0,10)
+        values = row['sample_values'].slice(0,10).map(item => parseInt(item))
 
         trace1 = {
             x:values,
@@ -31,7 +31,7 @@ function optionChanged(val){
             y: values,
             mode: 'markers',
             marker: {
-              size: values.map(item => parseInt(item) / max(values))
+              size: values
             }
           };
           
